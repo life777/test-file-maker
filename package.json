@@ -1,0 +1,92 @@
+{
+    "name": "test-file-maker",
+    "displayName": "Test file maker",
+    "description": "Creates a JS/TS test file for specific file",
+    "license": "MIT",
+    "version": "0.0.1",
+    "publisher": "vladimir",
+    "engines": {
+        "vscode": "^1.60.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/life777/test-file-maker"
+    },
+    "icon": "images/logo.png",
+    "keywords": [
+        "Create",
+        "Jest",
+        "Test"
+    ],
+    "categories": [
+        "Programming Languages",
+        "Other",
+        "Testing"
+    ],
+    "activationEvents": [
+        "workspaceContains:**/*.js",
+        "workspaceContains:**/*.ts"
+    ],
+    "main": "./out/extension.js",
+    "contributes": {
+        "commands": [{
+            "title": "Create test file",
+            "command": "test-file-maker.createTestFile"
+        }],
+        "menus": {
+            "explorer/context": [
+                {
+                    "command": "test-file-maker.createTestFile",
+                    "when": "resourceExtname == .ts || resourceExtname == .js"
+                }
+            ]
+        },
+        "configuration": {
+            "title": "Test file Maker",
+            "properties": {
+                "testFileMaker.testFramework": {
+                    "type": "string",
+                    "enum": ["jest", "jasmine", "ava", "qunit", "mocha", "tape", "none"],
+                    "description": "Specifies test framework that you are using",
+                    "default": "none"
+                },
+                "testFileMaker.testFileName": {
+                    "type": "string",
+                    "markdownDescription": "Creates pattern for new test file name. You can use `{FileName}` and `{FileNameExtention}` placeholders.",
+                    "default": "{FileName}Test{FileNameExtention}"
+                },
+                "testFileMaker.currentFilePathRoot": {
+                    "type": "string",
+                    "markdownDescription": "Specifies regex to match part of the current file path. For example, if file path is `./src/foo/bar/fn.ts` and you want to create test file in `./tests/foo/bar/fn.test.ts` then set this option to `./src`",
+                    "default": ""
+                },
+                "testFileMaker.testFilePath": {
+                    "type": "string",
+                    "markdownDescription": "Specifies path to a new test file. You can use `{FilePath}` and `{FilePathFromRoot}` as placeholder. See [currentFilePathRoot](#testFileMaker.currentFilePathRoot)",
+                    "default": "./tests"
+                }
+            }
+        }
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "pretest": "npm run compile && npm run lint",
+        "lint": "eslint src --ext ts",
+        "test": "node ./out/test/runTest.js"
+    },
+    "devDependencies": {
+        "@types/vscode": "^1.60.0",
+        "@types/glob": "^7.1.4",
+        "@types/mocha": "^9.0.0",
+        "@types/node": "14.x",
+        "@typescript-eslint/eslint-plugin": "^4.31.1",
+        "@typescript-eslint/parser": "^4.31.1",
+        "eslint": "^7.32.0",
+        "glob": "^7.1.7",
+        "mocha": "^9.1.1",
+        "typescript": "^4.4.3",
+        "@vscode/test-electron": "^1.6.2"
+    }
+}
