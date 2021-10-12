@@ -3,8 +3,8 @@
     "displayName": "Test file maker",
     "description": "Creates a JS/TS test file for specific file",
     "license": "MIT",
-    "version": "0.0.1",
-    "publisher": "vladimir",
+    "version": "0.1.0",
+    "publisher": "Vladimir",
     "engines": {
         "vscode": "^1.60.0"
     },
