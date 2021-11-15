@@ -5,6 +5,7 @@ import { createMochaTestFilePattern } from "./frameworks/mocha";
 import { createNoneTestFilePattern } from "./frameworks/none";
 import { createQUnitTestFilePattern } from "./frameworks/qunit";
 import { createTapeTestFilePattern } from "./frameworks/tape";
+import { createUvuTestFilePattern } from "./frameworks/uvu";
 
 type TemplateFn = {
     [frameworkName: string]: (fileName: string, modules: string[]) => string
@@ -17,7 +18,8 @@ const hash: TemplateFn = {
     "jasmine": createJasmineTestFilePattern,
     "ava": createAvaTestFilePattern,
     "mocha": createMochaTestFilePattern,
-    "tape": createTapeTestFilePattern
+    "tape": createTapeTestFilePattern,
+    "uvu": createUvuTestFilePattern
 };
 
 export const createTemplate = (

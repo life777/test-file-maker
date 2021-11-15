@@ -56,6 +56,7 @@
                         "qunit",
                         "mocha",
                         "tape",
+                        "uvu",
                         "none"
                     ],
                     "description": "Specifies test framework that you are using",
