@@ -19,3 +19,7 @@ Specify root directory for your Typescript and Javascript files.
 #### testFileMaker.testFilePath (default `./tests`)
 
 Specify directory where new test files should be created.
+
+#### testFileMaker.importFileExports (default `individual`)
+
+Specify how exports of testing file should be imported.
