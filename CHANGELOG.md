@@ -1,8 +1,7 @@
-# Change Log
+## [0.2.1]
 
-All notable changes to the "test-file-maker" extension will be documented in this file.
-
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+- Adds import line to test file with all exported functions and classes of a tested file.
+- Adds option to choose import line style. Default value: `individual`
 
 ## [0.1.0]
 
