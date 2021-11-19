@@ -3,7 +3,7 @@
     "displayName": "Test file maker",
     "description": "Creates a JS/TS test file for specific file",
     "license": "MIT",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "publisher": "Vladimir",
     "engines": {
         "vscode": "^1.60.0"
@@ -76,6 +76,16 @@
                     "type": "string",
                     "markdownDescription": "Specifies path to a new test file. You can use `{FilePath}` and `{FilePathFromRoot}` as placeholder. See [currentFilePathRoot](#testFileMaker.currentFilePathRoot)",
                     "default": "./tests"
+                },
+                "testFileMaker.importFileExports": {
+                    "type": "string",
+                    "markdownDescription": "Imports all testing file exports to a test file. `individual` option adds a `import { *** } from 'your/file/path';` line to a test file where all exports are separated by commas. `grouped` option groups all exports in file name variable. `none` doesn't include import line.",
+                    "enum": [
+                        "none",
+                        "individual",
+                        "grouped"
+                    ],
+                    "default": "none"
                 }
             }
         }
@@ -88,6 +98,9 @@
         "lint": "eslint src --ext ts",
         "test": "node ./out/test/runTest.js"
     },
+    "dependencies": {
+        "typescript": "^4.5.2"
+    },
     "devDependencies": {
         "@types/glob": "^7.1.4",
         "@types/mocha": "^9.0.0",
@@ -98,7 +111,6 @@
         "@vscode/test-electron": "^1.6.2",
         "eslint": "^7.32.0",
         "glob": "^7.1.7",
-        "mocha": "^9.1.1",
-        "typescript": "^4.4.3"
+        "mocha": "^9.1.1"
     }
 }

@@ -5,7 +5,7 @@ describe("Test for ${ fileName }", () => {
 `.trim();
 
 const createTest = (module: string) => `
-    it("Test ${ module }", () => {
-        expect(true).toBe(true);
-    });
+it("Test ${ module }", () => {
+    expect(true).toBe(true);
+});
 `.trim();

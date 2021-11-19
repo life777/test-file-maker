@@ -1,9 +1,11 @@
 import * as vscode from 'vscode';
-import { parse, join } from "path";
+import { parse } from "path";
 import { createTemplate } from './templates/templatesFactory';
 import { matchFileToWorkspaceFolder } from './workspace/pickWorkspace';
 import { createTestFilePath } from './workspace/createTestFilePath';
 import { getTestFileSettings } from './workspace/getTestFileSettings';
+import { createTestFileContent } from './workspace/testFileContent/createTestFileContent';
+import { ImportType } from './workspace/testFileContent/importType';
 
 const getFileToCreateTestFor = (file: vscode.Uri | undefined): vscode.Uri | undefined => {
     if (file) {
@@ -42,15 +44,23 @@ export function activate(context: vscode.ExtensionContext) {
             return;
         }
 
-        vscode.workspace.fs.stat(vscode.Uri.file(testFilePath))
+        settings.get<boolean>("importFileExports");
+        let testFile = vscode.Uri.file(testFilePath);
+        vscode.workspace.fs.stat(testFile)
             .then(undefined, () => {
-                let testFramework = settings.get<string>("testFramework") || "none";
-                let content = new Uint8Array(Buffer.from(createTemplate(testFramework, [], fileName.name)));
-                return vscode.workspace.fs.writeFile(vscode.Uri.file(testFilePath), content);
+                return createTestFileContent(
+                    file as vscode.Uri,
+                    testFile,
+                    fileName.name,
+                    settings.get<string>("testFramework") || "none",
+                    settings.get<ImportType>("importFileExports") || ImportType.none
+                )
+                .then(contentStr => vscode.workspace.fs.writeFile(
+                    testFile,
+                    new Uint8Array(Buffer.from(contentStr, "utf-8"))
+                ));
             })
-            .then(() => {
-                return vscode.window.showTextDocument(vscode.Uri.file(testFilePath));
-            });
+            .then(() => vscode.window.showTextDocument(testFile));
     });
 
     context.subscriptions.push(disposable);

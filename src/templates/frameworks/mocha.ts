@@ -7,7 +7,7 @@ describe("Test for ${ fileName }", () => {
 `.trim();
 
 const createTest = (module: string) => `
-    it("Test ${ module }", () => {
-        assert.ok(true);
-    });
+it("Test ${ module }", () => {
+    assert.ok(true);
+});
 `.trim();

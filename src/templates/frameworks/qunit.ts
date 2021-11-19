@@ -5,7 +5,7 @@ QUnit.module("Test for ${ fileName }", () => {
 `.trim();
 
 const createTest = (module: string) => `
-    QUnit.test("Test ${ module }", assert => {
-        assert.ok(true);
-    });
+QUnit.test("Test ${ module }", assert => {
+    assert.ok(true);
+});
 `.trim();
