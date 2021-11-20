@@ -44,7 +44,6 @@ export function activate(context: vscode.ExtensionContext) {
             return;
         }
 
-        settings.get<boolean>("importFileExports");
         let testFile = vscode.Uri.file(testFilePath);
         vscode.workspace.fs.stat(testFile)
             .then(undefined, () => {
