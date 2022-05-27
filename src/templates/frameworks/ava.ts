@@ -9,3 +9,7 @@ test("Test ${ module }", t => {
     t.pass();
 });
 `.trim();
+
+export const runAvaWatcher = (path: string, addWatcher: boolean) => {
+    return `ava ${ path } ${ addWatcher ? "--watch" : "" }`;
+};

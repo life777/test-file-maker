@@ -9,3 +9,7 @@ const createTest = (module: string) => `
         expect(true).toBeTruthy();
     });
 `;
+
+export const runJestWatcher = (path: string, addWatcher: boolean) => {
+    return `jest ${ path } ${ addWatcher ? "--watch" : "" }`;
+};

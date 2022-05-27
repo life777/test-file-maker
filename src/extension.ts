@@ -1,28 +1,17 @@
 import * as vscode from 'vscode';
 import { parse } from "path";
-import { createTemplate } from './templates/templatesFactory';
 import { matchFileToWorkspaceFolder } from './workspace/pickWorkspace';
 import { createTestFilePath } from './workspace/createTestFilePath';
 import { getTestFileSettings } from './workspace/getTestFileSettings';
 import { createTestFileContent } from './workspace/testFileContent/createTestFileContent';
 import { ImportType } from './workspace/testFileContent/importType';
-
-const getFileToCreateTestFor = (file: vscode.Uri | undefined): vscode.Uri | undefined => {
-    if (file) {
-        return file;
-    }
-
-    const activeTextEditor = vscode.window.activeTextEditor;
-    if (activeTextEditor) {
-        return activeTextEditor.document.uri;
-    }
-
-    return undefined;
-};
+import { getCurrentFile } from './workspace/getCurrentFileUri';
+import { runTests } from './testsRunner/runTests';
+import { TerminalFactory } from './workspace/terminal';
 
 export function activate(context: vscode.ExtensionContext) {
     let disposable = vscode.commands.registerCommand("test-file-maker.createTestFile", f => {
-        let file = getFileToCreateTestFor(f);
+        let file = getCurrentFile(f);
 
         if (!file) {
             vscode.window.showErrorMessage("No file selected");
@@ -63,6 +52,18 @@ export function activate(context: vscode.ExtensionContext) {
     });
 
     context.subscriptions.push(disposable);
+
+    let testTerminalFactory = new TerminalFactory("Run tests");
+    let disposable2 = vscode.commands.registerCommand("test-file-maker.startTestsWatcher", f => {
+        runTests(f, true, testTerminalFactory);
+    });
+
+    let disposable3 = vscode.commands.registerCommand("test-file-maker.runTests", f => {
+        runTests(f, false, testTerminalFactory);
+    });
+
+    context.subscriptions.push(disposable2);
+    context.subscriptions.push(disposable3);
 }
 
 export function deactivate() {}

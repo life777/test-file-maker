@@ -34,12 +34,48 @@
             {
                 "title": "Create test file",
                 "command": "test-file-maker.createTestFile"
+            },
+            {
+                "title": "Run test",
+                "command": "test-file-maker.runTests"
+            },
+            {
+                "title": "Start tests watcher",
+                "command": "test-file-maker.startTestsWatcher"
             }
         ],
         "menus": {
             "explorer/context": [
                 {
+                    "command": "test-file-maker.runTests",
+                    "group": "testFileMaker@1",
+                    "when": "resourceExtname == .ts || resourceExtname == .js || resourceExtname == ''"
+                },
+                {
+                    "command": "test-file-maker.startTestsWatcher",
+                    "group": "testFileMaker@2",
+                    "when": "resourceExtname == .ts || resourceExtname == .js || resourceExtname == ''"
+                },
+                {
                     "command": "test-file-maker.createTestFile",
+                    "group": "testFileMaker@3",
+                    "when": "resourceExtname == .ts || resourceExtname == .js"
+                }
+            ],
+            "editor/title/context": [
+                {
+                    "command": "test-file-maker.runTests",
+                    "group": "testFileMaker@1",
+                    "when": "resourceExtname == .ts || resourceExtname == .js || resourceExtname == ''"
+                },
+                {
+                    "command": "test-file-maker.startTestsWatcher",
+                    "group": "testFileMaker@2",
+                    "when": "resourceExtname == .ts || resourceExtname == .js || resourceExtname == ''"
+                },
+                {
+                    "command": "test-file-maker.createTestFile",
+                    "group": "testFileMaker@3",
                     "when": "resourceExtname == .ts || resourceExtname == .js"
                 }
             ]
@@ -86,6 +122,16 @@
                         "grouped"
                     ],
                     "default": "individual"
+                },
+                "testFileMaker.startingTestWatcherFileExtension": {
+                    "type": "string",
+                    "markdownDescription": "Specifies your test file extension. For example, if you want to watch all .js test files then set this option to `.js`. By default, it starts watcher for the file extension that you have opened in VS Code.",
+                    "enum": [
+                        "don't change",
+                        ".js",
+                        ".ts"
+                    ],
+                    "default": "don't change"
                 }
             }
         }
