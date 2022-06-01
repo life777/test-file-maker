@@ -1,3 +1,9 @@
+## [0.4.1]
+
+- Adds new config for manually settings path to tests config file
+- Makes possible search for tests framework config file in workspace
+- Fix minor bugs
+
 ## [0.3.1]
 
 - Makes possible to run tests and start tests watcher for `jest` and `ava` frameworks from context menu

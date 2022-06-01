@@ -27,3 +27,7 @@ Specify how exports of testing file should be imported.
 #### testFileMaker.startingTestWatcherFileExtension (default `don't change`)
 
 Specify file extentions in your project to run tests with single command. By default, it runs tests with the same extension as the file you are editing.
+
+#### testFileMaker.pathToTestFrameworkConfig (default ``)
+
+Specifies path to a test framework config file. By default, it searches for a config file in your project workspace.
