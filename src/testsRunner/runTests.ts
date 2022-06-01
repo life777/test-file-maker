@@ -37,7 +37,10 @@ export const runTests = async (
     }
 
     const testsTerminal = terminalFactory.createTerminal();
-    testsTerminal.show();
+    testsTerminal.show(false);
+
+    // we should wait until the terminal is focused
+    await testsTerminal.processId;
 
     // stop currently running tests in terminal
     await vscode.commands.executeCommand("workbench.action.terminal.sendSequence", { text : "\x03" });
