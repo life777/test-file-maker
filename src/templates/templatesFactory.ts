@@ -10,6 +10,7 @@ import { createUvuTestFilePattern } from "./frameworks/uvu";
 interface IFrameworkSettings {
     createTemplate: (fileName: string, modules: string[]) => string;
     runTests?: (path: string, pathToConfig: string, watcher: boolean) => string;
+    configFileName?: string;
 }
 
 type TemplateFn = {
@@ -17,11 +18,11 @@ type TemplateFn = {
 };
 
 const hash: TemplateFn = {
-    "jest": { createTemplate: createJestTestFilePattern, runTests: runJestWatcher },
+    "jest": { createTemplate: createJestTestFilePattern, runTests: runJestWatcher, configFileName: "jest.config.*" },
     "qunit": { createTemplate: createQUnitTestFilePattern },
     "none": { createTemplate: createNoneTestFilePattern },
     "jasmine": { createTemplate: createJasmineTestFilePattern },
-    "ava": { createTemplate: createAvaTestFilePattern, runTests: runAvaWatcher },
+    "ava": { createTemplate: createAvaTestFilePattern, runTests: runAvaWatcher, configFileName: "ava.config.*" },
     "mocha": { createTemplate: createMochaTestFilePattern },
     "tape": { createTemplate: createTapeTestFilePattern },
     "uvu": { createTemplate: createUvuTestFilePattern }
@@ -39,16 +40,12 @@ export const createTemplate = (
     );
 };
 
-export const createCommandToRunFrameworkTests = (
-    frameworkName: string,
-    path: string,
-    pathToConfig: string,
-    addWatcher: boolean
-) => {
-    const { runTests } = hash[frameworkName] || hash["none"];
-    if (runTests) {
-        return runTests(path, pathToConfig, addWatcher);
-    }
-
-    return "";
+export const getFrameworkSettings = (
+    frameworkName: string
+): Required<IFrameworkSettings> => {
+    return {
+        configFileName: "",
+        runTests: () => "",
+        ...hash[frameworkName] || hash["none"]
+    };
 };
