@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { extname } from "path";
+import { extname, join } from "path";
 import { matchFileToWorkspaceFolder } from '../workspace/pickWorkspace';
 import { createCommandToRunFrameworkTests } from '../templates/templatesFactory';
 import { getCurrentFile } from '../workspace/getCurrentFileUri';
@@ -20,7 +20,7 @@ export const runTests = async (
     let workspaceRoot = matchFileToWorkspaceFolder(vscode.workspace.workspaceFolders || [], file.fsPath);
     if (!workspaceRoot) {
         vscode.window.showErrorMessage("No workspace folder found for the file");
-        return;
+        return "";
     }
 
     const settings = vscode.workspace.getConfiguration("testFileMaker");
@@ -28,8 +28,9 @@ export const runTests = async (
     const testFileExt = settings.get<string>("startingTestWatcherFileExtension") || "don't change";
     const fileExt = extname(file.fsPath);
     const filePath = fileExt !== "" && testFileExt !== "don't change" ? file.fsPath.replace(fileExt, testFileExt) : file.fsPath;
+    const pathToConfig = getPathToConfig(workspaceRoot);
     const relativeFilePath = filePath.replace(workspaceRoot, ".");
-    const watcherCommand = createCommandToRunFrameworkTests(framework, relativeFilePath, addWatcher);
+    const watcherCommand = createCommandToRunFrameworkTests(framework, relativeFilePath, pathToConfig, addWatcher);
 
     if (watcherCommand === "") {
         vscode.window.showErrorMessage("Your test framework does not support watching");
@@ -47,4 +48,18 @@ export const runTests = async (
 
     testsTerminal.sendText(`npx ${ watcherCommand }`);
     return testsTerminal;
+};
+
+const getPathToConfig = (workspaceRoot: string): string => {
+    const settings = vscode.workspace.getConfiguration("testFileMaker");
+
+    const root = settings.get<string>("pathToTestFrameworkConfig") || "";
+    let testsFolder = join(workspaceRoot, root);
+
+    if (!testsFolder.startsWith(workspaceRoot)) {
+        vscode.window.showErrorMessage("Test root folder is not within the workspace");
+        return "";
+    }
+
+    return testsFolder.replace(workspaceRoot, ".");
 };

@@ -10,6 +10,11 @@ test("Test ${ module }", t => {
 });
 `.trim();
 
-export const runAvaWatcher = (path: string, addWatcher: boolean) => {
-    return `ava ${ path } ${ addWatcher ? "--watch" : "" }`;
+export const runAvaWatcher = (path: string, pathToConfig: string, addWatcher: boolean) => {
+    let args = [
+        pathToConfig ? `--config ${ pathToConfig }` : "",
+        addWatcher ? "--watch" : ""
+    ].filter(s => s);
+
+    return `ava ${ path } ${ args.join(" ") }`;
 };

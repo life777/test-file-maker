@@ -10,6 +10,11 @@ const createTest = (module: string) => `
     });
 `;
 
-export const runJestWatcher = (path: string, addWatcher: boolean) => {
-    return `jest ${ path } ${ addWatcher ? "--watch" : "" }`;
+export const runJestWatcher = (path: string, pathToConfig: string, addWatcher: boolean) => {
+    let args = [
+        pathToConfig ? `--config ${ pathToConfig }` : "",
+        addWatcher ? "--watch" : ""
+    ].filter(s => s);
+
+    return `jest ${ path } ${ args.join(" ") }`;
 };

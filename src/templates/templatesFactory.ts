@@ -9,7 +9,7 @@ import { createUvuTestFilePattern } from "./frameworks/uvu";
 
 interface IFrameworkSettings {
     createTemplate: (fileName: string, modules: string[]) => string;
-    runTests?: (path: string, watcher: boolean) => string;
+    runTests?: (path: string, pathToConfig: string, watcher: boolean) => string;
 }
 
 type TemplateFn = {
@@ -42,11 +42,12 @@ export const createTemplate = (
 export const createCommandToRunFrameworkTests = (
     frameworkName: string,
     path: string,
+    pathToConfig: string,
     addWatcher: boolean
 ) => {
     const { runTests } = hash[frameworkName] || hash["none"];
     if (runTests) {
-        return runTests(path, addWatcher);
+        return runTests(path, pathToConfig, addWatcher);
     }
 
     return "";

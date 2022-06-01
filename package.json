@@ -132,6 +132,11 @@
                         ".ts"
                     ],
                     "default": "don't change"
+                },
+                "testFileMaker.pathToTestFrameworkConfig": {
+                    "type": "string",
+                    "markdownDescription": "Specifies path to a test framework config file. By default, it searches for a config file in your project workspace.",
+                    "default": ""
                 }
             }
         }
