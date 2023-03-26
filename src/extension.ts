@@ -34,7 +34,7 @@ export function activate(context: vscode.ExtensionContext) {
         }
 
         let testFile = vscode.Uri.file(testFilePath);
-        vscode.workspace.fs.stat(testFile)
+        return vscode.workspace.fs.stat(testFile)
             .then(undefined, () => {
                 return createTestFileContent(
                     file as vscode.Uri,
