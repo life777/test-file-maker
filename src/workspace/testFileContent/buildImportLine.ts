@@ -40,5 +40,14 @@ const createIndividualImportLine = (
 const createGroupedImportLine = (
     fileName: string
 ): string => {
-    return ` * as ${ fileName }`;
+    return ` * as ${ formatVariableName(fileName) }`;
 };
+
+const DEFAULT_GROUPPED_VARIABLE_NAME = "jsModule";
+
+const formatVariableName = (fileName: string) => {
+    return fileName.split(/[^a-z]/ig)
+        .filter(s => s.trim().length > 0)
+        .map((s, i) => i !== 0 ? `${s[0].toLocaleUpperCase()}${ s.slice(1).toLocaleLowerCase() }` : s.toLocaleLowerCase())
+        .join("") || DEFAULT_GROUPPED_VARIABLE_NAME;
+}
