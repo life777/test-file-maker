@@ -13,8 +13,10 @@ export const createImportLine = (
         return "";
     }
 
-    let { dir, name } = path.parse(filePath);
-    return `import ${ createImportPart(fileName, exports, importType) } from "${ path.join(dir, name) }";`;
+    const { dir, name } = path.parse(filePath);
+    // if dir is empty thie test file is in the same directory
+    const importPath = dir.trim() === "" ? `.${ path.sep }${ name }` : path.join(dir, name) 
+    return `import ${ createImportPart(fileName, exports, importType) } from "${ importPath }";`;
 };
 
 const createImportPart = (
