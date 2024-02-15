@@ -14,7 +14,7 @@ export const createImportLine = (
     }
 
     const { dir, name } = path.parse(filePath);
-    // if dir is empty thie test file is in the same directory
+    // if dir is empty the test file is in the same directory
     const importPath = dir.trim() === "" ? `.${ path.sep }${ name }` : path.join(dir, name) 
     return `import ${ createImportPart(fileName, exports, importType) } from "${ importPath }";`;
 };
