@@ -47,7 +47,7 @@ const parseExport = (
 };
 
 const checkModifier = (
-    node: ts.Node,
+    node: ts.FunctionDeclaration | ts.ClassDeclaration | ts.VariableStatement,
     type: ts.SyntaxKind
 ): boolean => {
     if (!node.modifiers) {
@@ -58,11 +58,11 @@ const checkModifier = (
 };
 
 const checkExportModifier = (
-    node: ts.Node
+    node: ts.FunctionDeclaration | ts.ClassDeclaration | ts.VariableStatement
 ): boolean => checkModifier(node, ts.SyntaxKind.ExportKeyword);
 
 const checkDefaultExport = (
-    node: ts.Node
+    node: ts.FunctionDeclaration | ts.ClassDeclaration | ts.VariableStatement
 ): boolean => checkModifier(node, ts.SyntaxKind.DefaultKeyword);
 
 const parseFunctionClassDeclaration = (

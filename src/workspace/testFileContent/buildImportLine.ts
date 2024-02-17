@@ -52,4 +52,4 @@ const formatVariableName = (fileName: string) => {
         .filter(s => s.trim().length > 0)
         .map((s, i) => i !== 0 ? `${s[0].toLocaleUpperCase()}${ s.slice(1).toLocaleLowerCase() }` : s.toLocaleLowerCase())
         .join("") || DEFAULT_GROUPPED_VARIABLE_NAME;
-}
+};
