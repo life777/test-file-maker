@@ -4,3 +4,6 @@ node_modules
 .vscode
 *.md
 *.json
+dist
+*.vsix
+images

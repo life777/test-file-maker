@@ -14,38 +14,29 @@ interface IFrameworkSettings {
 }
 
 type TemplateFn = {
-    [frameworkName: string]: IFrameworkSettings
+    [frameworkName: string]: IFrameworkSettings;
 };
 
 const hash: TemplateFn = {
-    "jest": { createTemplate: createJestTestFilePattern, runTests: runJestWatcher, configFileName: "jest.config.*" },
-    "qunit": { createTemplate: createQUnitTestFilePattern },
-    "none": { createTemplate: createNoneTestFilePattern },
-    "jasmine": { createTemplate: createJasmineTestFilePattern },
-    "ava": { createTemplate: createAvaTestFilePattern, runTests: runAvaWatcher, configFileName: "ava.config.*" },
-    "mocha": { createTemplate: createMochaTestFilePattern },
-    "tape": { createTemplate: createTapeTestFilePattern },
-    "uvu": { createTemplate: createUvuTestFilePattern }
+    jest: { createTemplate: createJestTestFilePattern, runTests: runJestWatcher, configFileName: "jest.config.*" },
+    qunit: { createTemplate: createQUnitTestFilePattern },
+    none: { createTemplate: createNoneTestFilePattern },
+    jasmine: { createTemplate: createJasmineTestFilePattern },
+    ava: { createTemplate: createAvaTestFilePattern, runTests: runAvaWatcher, configFileName: "ava.config.*" },
+    mocha: { createTemplate: createMochaTestFilePattern },
+    tape: { createTemplate: createTapeTestFilePattern },
+    uvu: { createTemplate: createUvuTestFilePattern }
 };
 
-export const createTemplate = (
-    frameworkName: string,
-    modules: string[],
-    fileName: string
-) => {
+export const createTemplate = (frameworkName: string, modules: string[], fileName: string) => {
     const { createTemplate } = hash[frameworkName] || hash["none"];
-    return createTemplate(
-        fileName,
-        modules.length > 0 ? modules : [fileName]
-    );
+    return createTemplate(fileName, modules.length > 0 ? modules : [fileName]);
 };
 
-export const getFrameworkSettings = (
-    frameworkName: string
-): Required<IFrameworkSettings> => {
+export const getFrameworkSettings = (frameworkName: string): Required<IFrameworkSettings> => {
     return {
         configFileName: "",
         runTests: () => "",
-        ...hash[frameworkName] || hash["none"]
+        ...(hash[frameworkName] || hash["none"])
     };
 };

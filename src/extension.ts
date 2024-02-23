@@ -1,16 +1,16 @@
-import * as vscode from 'vscode';
+import * as vscode from "vscode";
 import { parse } from "path";
-import { matchFileToWorkspaceFolder } from './workspace/pickWorkspace';
-import { createTestFilePath } from './workspace/createTestFilePath';
-import { getTestFileSettings } from './workspace/getTestFileSettings';
-import { createTestFileContent } from './workspace/testFileContent/createTestFileContent';
-import { ImportType } from './workspace/testFileContent/importType';
-import { getCurrentFile } from './workspace/getCurrentFileUri';
-import { runTests } from './testsRunner/runTests';
-import { TerminalFactory } from './workspace/terminal';
+import { matchFileToWorkspaceFolder } from "./workspace/pickWorkspace";
+import { createTestFilePath } from "./workspace/createTestFilePath";
+import { getTestFileSettings } from "./workspace/getTestFileSettings";
+import { createTestFileContent } from "./workspace/testFileContent/createTestFileContent";
+import { ImportType } from "./workspace/testFileContent/importType";
+import { getCurrentFile } from "./workspace/getCurrentFileUri";
+import { runTests } from "./testsRunner/runTests";
+import { TerminalFactory } from "./workspace/terminal";
 
 export function activate(context: vscode.ExtensionContext) {
-    let disposable = vscode.commands.registerCommand("test-file-maker.createTestFile", f => {
+    let disposable = vscode.commands.registerCommand("test-file-maker.createTestFile", (f) => {
         let file = getCurrentFile(f);
 
         if (!file) {
@@ -34,7 +34,8 @@ export function activate(context: vscode.ExtensionContext) {
         }
 
         let testFile = vscode.Uri.file(testFilePath);
-        vscode.workspace.fs.stat(testFile)
+        vscode.workspace.fs
+            .stat(testFile)
             .then(undefined, () => {
                 return createTestFileContent(
                     file as vscode.Uri,
@@ -42,11 +43,9 @@ export function activate(context: vscode.ExtensionContext) {
                     fileName.name,
                     settings.get<string>("testFramework") || "none",
                     settings.get<ImportType>("importFileExports") || ImportType.none
-                )
-                .then(contentStr => vscode.workspace.fs.writeFile(
-                    testFile,
-                    new Uint8Array(Buffer.from(contentStr, "utf-8"))
-                ));
+                ).then((contentStr) =>
+                    vscode.workspace.fs.writeFile(testFile, new Uint8Array(Buffer.from(contentStr, "utf-8")))
+                );
             })
             .then(() => vscode.window.showTextDocument(testFile));
     });
@@ -54,11 +53,11 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(disposable);
 
     let testTerminalFactory = new TerminalFactory("Run tests");
-    let disposable2 = vscode.commands.registerCommand("test-file-maker.startTestsWatcher", f => {
+    let disposable2 = vscode.commands.registerCommand("test-file-maker.startTestsWatcher", (f) => {
         runTests(f, true, testTerminalFactory);
     });
 
-    let disposable3 = vscode.commands.registerCommand("test-file-maker.runTests", f => {
+    let disposable3 = vscode.commands.registerCommand("test-file-maker.runTests", (f) => {
         runTests(f, false, testTerminalFactory);
     });
 

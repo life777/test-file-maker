@@ -1,10 +1,10 @@
-import * as vscode from 'vscode';
+import * as vscode from "vscode";
 
 export const matchFileToWorkspaceFolder = (
     workspaceFolders: readonly vscode.WorkspaceFolder[],
     fileName: string
 ): string | undefined => {
-    let folders = workspaceFolders.filter(f => fileName.startsWith(f.uri.fsPath));
+    let folders = workspaceFolders.filter((f) => fileName.startsWith(f.uri.fsPath));
     if (folders.length === 0) {
         return undefined;
     }

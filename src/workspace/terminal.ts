@@ -1,4 +1,4 @@
-import * as vscode from 'vscode';
+import * as vscode from "vscode";
 
 export interface ITerminalFactory {
     createTerminal(): vscode.Terminal;
@@ -7,9 +7,7 @@ export interface ITerminalFactory {
 export class TerminalFactory {
     private terminal: vscode.Terminal | undefined;
 
-    constructor (
-        private readonly title: string
-    ) {}
+    constructor(private readonly title: string) {}
 
     public createTerminal(): vscode.Terminal {
         if (this.terminal && this.terminal.exitStatus === undefined) {

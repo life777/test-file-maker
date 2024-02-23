@@ -1,15 +1,11 @@
-import * as vscode from 'vscode';
+import * as vscode from "vscode";
 import { extname, join } from "path";
-import { matchFileToWorkspaceFolder } from '../workspace/pickWorkspace';
-import { getFrameworkSettings } from '../templates/templatesFactory';
-import { getCurrentFile } from '../workspace/getCurrentFileUri';
-import { ITerminalFactory } from '../workspace/terminal';
+import { matchFileToWorkspaceFolder } from "../workspace/pickWorkspace";
+import { getFrameworkSettings } from "../templates/templatesFactory";
+import { getCurrentFile } from "../workspace/getCurrentFileUri";
+import { ITerminalFactory } from "../workspace/terminal";
 
-export const runTests = async (
-    f: vscode.Uri | undefined,
-    addWatcher: boolean,
-    terminalFactory: ITerminalFactory
-) => {
+export const runTests = async (f: vscode.Uri | undefined, addWatcher: boolean, terminalFactory: ITerminalFactory) => {
     let file = getCurrentFile(f);
 
     if (!file) {
@@ -27,14 +23,17 @@ export const runTests = async (
     const framework = settings.get<string>("testFramework") || "none";
     const testFileExt = settings.get<string>("startingTestWatcherFileExtension") || "don't change";
     const fileExt = extname(file.fsPath);
-    const filePath = fileExt !== "" && testFileExt !== "don't change" ? file.fsPath.replace(fileExt, testFileExt) : file.fsPath;
+    const filePath =
+        fileExt !== "" && testFileExt !== "don't change" ? file.fsPath.replace(fileExt, testFileExt) : file.fsPath;
     const frameworkSettings = getFrameworkSettings(framework);
     const pathToConfig = await getPathToConfig(workspaceRoot, frameworkSettings.configFileName);
     const relativeFilePath = filePath.replace(workspaceRoot, ".");
     const watcherCommand = frameworkSettings.runTests(relativeFilePath, pathToConfig, addWatcher);
 
     if (watcherCommand === "") {
-        vscode.window.showErrorMessage("Your test framework does not support running tests with this extension. Could you create an issue on github?");
+        vscode.window.showErrorMessage(
+            "Your test framework does not support running tests with this extension. Could you create an issue on github?"
+        );
         return;
     }
 
@@ -45,9 +44,9 @@ export const runTests = async (
     await testsTerminal.processId;
 
     // stop currently running tests in terminal
-    await vscode.commands.executeCommand("workbench.action.terminal.sendSequence", { text : "\x03" });
+    await vscode.commands.executeCommand("workbench.action.terminal.sendSequence", { text: "\x03" });
 
-    testsTerminal.sendText(`npx ${ watcherCommand }`);
+    testsTerminal.sendText(`npx ${watcherCommand}`);
     return testsTerminal;
 };
 
@@ -76,7 +75,7 @@ const findConfigFile = async (workspaceRoot: string, configFileName: string) => 
         return foundConfigFile;
     }
 
-    let files = await vscode.workspace.findFiles(`**/${ configFileName }`, `node_modules/**`, 1);
+    let files = await vscode.workspace.findFiles(`**/${configFileName}`, `node_modules/**`, 1);
 
     if (files.length > 0) {
         foundConfigFile = files[0].fsPath.replace(workspaceRoot, ".");
