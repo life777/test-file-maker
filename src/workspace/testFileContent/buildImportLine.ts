@@ -15,7 +15,7 @@ export const createImportLine = (
 
     const { dir, name } = path.parse(filePath);
     // if dir is empty the test file is in the same directory
-    const importPath = dir.trim() === "" ? `.${ path.sep }${ name }` : path.join(dir, name) 
+    const importPath = dir.trim() === "" ? `.${ path.sep }${ name }` : path.join(dir, name);
     return `import ${ createImportPart(fileName, exports, importType) } from "${ importPath }";`;
 };
 
@@ -48,7 +48,7 @@ const createGroupedImportLine = (
 const DEFAULT_GROUPPED_VARIABLE_NAME = "jsModule";
 
 const formatVariableName = (fileName: string) => {
-    return fileName.split(/[^a-z]/ig)
+    return fileName.split(/[^a-z]/gi)
         .filter(s => s.trim().length > 0)
         .map((s, i) => i !== 0 ? `${s[0].toLocaleUpperCase()}${ s.slice(1).toLocaleLowerCase() }` : s.toLocaleLowerCase())
         .join("") || DEFAULT_GROUPPED_VARIABLE_NAME;
