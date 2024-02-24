@@ -1,4 +1,4 @@
-import * as vscode from 'vscode';
+import * as vscode from "vscode";
 
 export const getCurrentFile = (file: vscode.Uri | undefined): vscode.Uri | undefined => {
     if (file) {

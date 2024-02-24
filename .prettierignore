@@ -1,0 +1,9 @@
+out
+node_modules
+.vscode-test
+.vscode
+*.md
+*.json
+dist
+*.vsix
+images
